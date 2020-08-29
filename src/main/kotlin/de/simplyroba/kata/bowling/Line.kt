@@ -1,4 +1,4 @@
-package de.simplyroba.kata
+package de.simplyroba.kata.bowling
 
 class Line(
         private val frames: ArrayList<Frame>
