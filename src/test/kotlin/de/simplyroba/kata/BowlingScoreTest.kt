@@ -18,7 +18,15 @@ internal class BowlingScoreTest {
 
     @Test
     internal fun `should calculate gutter line with a zero score`() {
-        val gutterLine = Line()
-        assertThat(gutterLine.calculateScore()).isEqualTo(GUTTER_LINE_SCORE)
+        val frames = arrayListOf<Frame>()
+        repeat(10) { frames.add(Frame("0","0")) }
+        assertThat(Line(frames).calculateScore()).isEqualTo(GUTTER_LINE_SCORE)
+    }
+
+    @Test
+    internal fun `should calculate line with one pin down each turn`() {
+        val frames = arrayListOf<Frame>()
+        repeat(10) { frames.add(Frame("0","0")) }
+        assertThat(Line(frames).calculateScore()).isEqualTo(20)
     }
 }
