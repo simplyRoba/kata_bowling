@@ -81,4 +81,11 @@ internal class ScoreTest {
         repeat(8) { frames.add(Frame('1', '1')) }
         assertThat(Line(frames).calculateScore()).isEqualTo(10 + 5 + 5 + 5 + 5 + 1 + 16)
     }
+
+    @Test
+    internal fun `should calculate strike followed misses the rest of the game`() {
+        frames.add(Frame('x'))
+        repeat(9) { frames.add(Frame()) }
+        assertThat(Line(frames).calculateScore()).isEqualTo(10)
+    }
 }
