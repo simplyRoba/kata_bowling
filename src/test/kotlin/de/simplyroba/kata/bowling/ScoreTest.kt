@@ -41,9 +41,23 @@ internal class ScoreTest {
     }
 
     @Test
-    internal fun `should calculate line with strike at the beginning and one pin down each other turn`() {
+    internal fun `should calculate line with one strike at the beginning and one pin down each other turn`() {
         frames.add(Frame('x'))
         repeat(9) { frames.add(Frame('1', '1')) }
         assertThat(Line(frames).calculateScore()).isEqualTo(10 + 1 + 1 + 18)
+    }
+
+    @Test
+    internal fun `should calculate line with one strike at the end and one pin down each other turn`() {
+        repeat(9) { frames.add(Frame('1', '1')) }
+        frames.add(Frame('x','-', '1', '1'))
+        assertThat(Line(frames).calculateScore()).isEqualTo(18 + 10 + 1 + 1)
+    }
+
+    @Test
+    internal fun `should calculate all strikes`() {
+        repeat(9) { frames.add(Frame('x')) }
+        frames.add(Frame('x', 'x', 'x', 'x'))
+        assertThat(Line(frames).calculateScore()).isEqualTo(300)
     }
 }
