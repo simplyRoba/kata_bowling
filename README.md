@@ -1,8 +1,8 @@
 ![Test](https://github.com/simplyRoba/kata_bowling/workflows/Test/badge.svg?branch=master)
 
-#BOWLING KATA
+# BOWLING KATA
 
-##Problem Description
+## Problem Description
 
 Create a program, which, given a valid sequence of rolls for one line of American Ten-Pin Bowling, 
 produces the total score for the game. Here are some things that the program will not do:
@@ -32,13 +32,13 @@ If the bonus throws knock down all the pins, the process does not repeat: the bo
 are only used to calculate the score of the final frame.
 * The game score is the total of all frame scores.
 
-##Clues
+## Clues
 
 What makes this game interesting to score is the lookahead in the scoring for strike and spare. 
 At the time we throw a strike or spare, we cannot calculate the frame score: 
 we have to wait one or two frames to find out what the bonus is.
 
-##Suggested Test Cases
+## Suggested Test Cases
 
 (When scoring “X” indicates a strike, “/” indicates a spare, “-” indicates a miss)
 
