@@ -1,11 +1,8 @@
 package de.simplyroba.kata.bowling
 
-typealias Frames = ArrayList<Frame>
-
-fun Frames.nextFrame(currentFrameIndex: Int): Frame {
-    return this[currentFrameIndex + 1]
-}
-
+/**
+ * @author simplyroba
+ */
 class Line(
     private val frames: Frames
 ) {
@@ -23,15 +20,39 @@ class Line(
 
     private fun parseFrameScore(frame: Frame, currentFrameIndex: Int): Int {
         return when {
+            frame.isStrike() -> calculateStrike(currentFrameIndex)
             frame.isSpare() -> calculateSpare(currentFrameIndex)
-            else -> frame.firstRoll.value() + frame.secondRoll.value()
+            else -> with(frame) { firstRoll.points() + secondRoll.points() }
+        }
+    }
+
+    private fun calculateStrike(currentFrameIndex: Int): Int {
+        return when (currentFrameIndex) {
+            LAST_FRAME_INDEX -> {
+                val currentFrame = frames[currentFrameIndex]
+                 with(currentFrame) {
+                     FULL_POINTS
+                         .plus(firstBonusRoll.points())
+                         .plus(secondBonusRoll.points())
+                 }
+            }
+            else -> {
+                val nextFrame = frames.nextFrame(currentFrameIndex)
+                with(nextFrame) {
+                    FULL_POINTS
+                        .plus(firstRoll.points())
+                        .plus(secondRoll.points())
+                }
+            }
         }
     }
 
     private fun calculateSpare(currentFrameIndex: Int): Int {
         return when (currentFrameIndex) {
-            LAST_FRAME_INDEX -> FULL_POINTS + frames[currentFrameIndex].firstBonusRoll.value()
-            else -> FULL_POINTS + frames.nextFrame(currentFrameIndex).firstRoll.value()
+            LAST_FRAME_INDEX -> FULL_POINTS
+                .plus(frames[currentFrameIndex].firstBonusRoll.points())
+            else -> FULL_POINTS
+                .plus(frames.nextFrame(currentFrameIndex).firstRoll.points())
         }
     }
 }
