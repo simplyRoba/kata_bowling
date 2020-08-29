@@ -39,4 +39,11 @@ internal class ScoreTest {
         frames.add(Frame('6','/', '1'))
         assertThat(Line(frames).calculateScore()).isEqualTo(18 + 10 + 1)
     }
+
+    @Test
+    internal fun `should calculate line with strike at the beginning and one pin down each other turn`() {
+        frames.add(Frame('x'))
+        repeat(9) { frames.add(Frame('1', '1')) }
+        assertThat(Line(frames).calculateScore()).isEqualTo(10 + 1 + 1 + 18)
+    }
 }
