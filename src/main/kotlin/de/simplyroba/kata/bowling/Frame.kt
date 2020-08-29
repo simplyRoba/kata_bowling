@@ -18,7 +18,10 @@ class Frame(
     fun isStrike() = firstRoll == STRIKE_ROLL
 
     fun points(): Int {
-        return firstRoll.points().plus(secondRoll.points())
+        return when {
+            isStrike().or(isSpare()) -> 10
+            else -> firstRoll.points().plus(secondRoll.points())
+        }
     }
 
     fun bonusPoints(): Int {
