@@ -57,7 +57,7 @@ internal class ScoreTest {
     @Test
     internal fun `should calculate all strikes`() {
         repeat(9) { frames.add(Frame('x')) }
-        frames.add(Frame('x', 'x', 'x', 'x'))
+        frames.add(Frame('x', '-', 'x', 'x'))
         assertThat(Line(frames).calculateScore()).isEqualTo(300)
     }
 }
