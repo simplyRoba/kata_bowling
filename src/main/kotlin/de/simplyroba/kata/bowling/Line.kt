@@ -6,71 +6,66 @@ package de.simplyroba.kata.bowling
 class Line(
     private val frames: Frames
 ) {
-    companion object {
-        private const val LAST_FRAME_INDEX = 9
-        private const val SECOND_TO_LAST_FRAME_INDEX = 8
-        private const val FULL_POINTS = 10
-    }
-
     fun calculateScore(): Int {
         return frames
             .mapIndexed { index, frame -> parseFrameScore(frame, index) }
             .sum()
     }
 
-    private fun parseFrameScore(frame: Frame, currentFrameIndex: Int): Int {
+    private fun parseFrameScore(currentFrame: Frame, currentFrameIndex: Int): Int {
         return when {
-            frame.isStrike() -> calculateStrike(currentFrameIndex)
-            frame.isSpare() -> calculateSpare(currentFrameIndex)
-            else -> frame.points()
+            currentFrame.isStrike() -> calculateStrike(currentFrame, currentFrameIndex)
+            currentFrame.isSpare() -> calculateSpare(currentFrame, currentFrameIndex)
+            else -> currentFrame.points()
         }
     }
 
-    private fun calculateStrike(currentFrameIndex: Int): Int {
+    private fun calculateStrike(currentFrame: Frame, currentFrameIndex: Int): Int {
         return when (currentFrameIndex) {
-            LAST_FRAME_INDEX -> calculateStrikeInLastFrame()
-            SECOND_TO_LAST_FRAME_INDEX -> calculateStrikeInSecondToLastFrame()
-            else -> calculateStrikeInFirstEightFrames(currentFrameIndex)
+            LAST_FRAME_INDEX -> calculateStrikeInLastFrame(currentFrame)
+            SECOND_TO_LAST_FRAME_INDEX -> calculateStrikeInSecondToLastFrame(currentFrame)
+            else -> calculateStrikeInFirstEightFrames(currentFrame, currentFrameIndex)
         }
     }
 
-    private fun calculateStrikeInFirstEightFrames(currentFrameIndex: Int): Int {
+    private fun calculateStrikeInFirstEightFrames(currentFrame: Frame,
+                                                  currentFrameIndex: Int): Int {
         val nextFrame = frames.nextFrame(currentFrameIndex)
-        val afterNextFrame = frames.nextFrame(currentFrameIndex + 1)
+        val afterNextFrame = frames.afterNextFrame(currentFrameIndex)
         return when {
             nextFrame.isStrike() -> {
-                FULL_POINTS
+                currentFrame.points()
                     .plus(nextFrame.firstRoll.points())
                     .plus(afterNextFrame.firstRoll.points())
             }
-            else -> FULL_POINTS.plus(nextFrame.points())
+            else -> currentFrame.points().plus(nextFrame.points())
         }
     }
 
-    private fun calculateStrikeInSecondToLastFrame(): Int {
-        val lastFrame = frames[LAST_FRAME_INDEX]
-        with(lastFrame) {
-            return when {
-                isStrike() -> {
-                    FULL_POINTS
-                        .plus(firstRoll.points())
-                        .plus(firstBonusRoll.points())
-                }
-                else -> FULL_POINTS.plus(points())
+    private fun calculateStrikeInSecondToLastFrame(currentFrame: Frame): Int {
+        val lastFrame = frames.last()
+        return when {
+            lastFrame.isStrike() -> {
+                currentFrame.points()
+                    .plus(lastFrame.firstRoll.points())
+                    .plus(lastFrame.firstBonusRoll.points())
             }
+            else -> currentFrame.points().plus(lastFrame.points())
         }
     }
 
-    private fun calculateStrikeInLastFrame(): Int {
-        return FULL_POINTS.plus(frames.last().bonusPoints())
+    private fun calculateStrikeInLastFrame(currentFrame: Frame): Int {
+        return currentFrame.points().plus(frames.last().bonusPoints())
     }
 
-    private fun calculateSpare(currentFrameIndex: Int): Int {
+    private fun calculateSpare(currentFrame: Frame, currentFrameIndex: Int): Int {
         return when (currentFrameIndex) {
-            LAST_FRAME_INDEX -> FULL_POINTS
-                .plus(frames[currentFrameIndex].firstBonusRoll.points())
-            else -> FULL_POINTS
-                .plus(frames.nextFrame(currentFrameIndex).firstRoll.points())
+            LAST_FRAME_INDEX ->
+                currentFrame.points()
+                    .plus(currentFrame.firstBonusRoll.points())
+            else ->
+                currentFrame.points()
+                    .plus(frames.nextFrame(currentFrameIndex).firstRoll.points())
         }
     }
 }
