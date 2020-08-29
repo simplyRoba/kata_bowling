@@ -1,8 +1,20 @@
 package de.simplyroba.kata.bowling
 
+typealias Frames = ArrayList<Frame>
+
+fun Frames.nextFrame(currentFrameIndex: Int): Frame {
+    return this[currentFrameIndex + 1]
+}
+
 class Line(
-        private val frames: ArrayList<Frame>
+        private val frames: Frames
 ) {
+
+    companion object {
+        private const val LAST_FRAME_INDEX = 9
+        private const val FULL_POINTS = 10
+    }
+
     fun calculateScore(): Int {
         var score = 0
         for ((index, frame) in frames.withIndex()) {
@@ -11,23 +23,17 @@ class Line(
         return score
     }
 
-    private fun parseFrameScore(frame: Frame, frameIndex: Int): Int {
+    private fun parseFrameScore(frame: Frame, currentFrameIndex: Int): Int {
         return when {
-            isSpare(frame) -> calculateSpare(frameIndex)
-            else -> frame.firstRoll.toInt() + frame.secondRoll.toInt()
+            frame.isSpare() -> calculateSpare(currentFrameIndex)
+            else -> frame.firstRoll.value() + frame.secondRoll.value()
         }
     }
 
-
-    private fun calculateSpare(frameIndex: Int): Int {
-        return when {
-            frameIndex == 9 -> 10 + frames[frameIndex].firstBonusRoll.toInt()
-            else -> 10 + frames[frameIndex + 1].firstRoll.toInt()
+    private fun calculateSpare(currentFrameIndex: Int): Int {
+        return when (currentFrameIndex) {
+            LAST_FRAME_INDEX -> FULL_POINTS + frames[currentFrameIndex].firstBonusRoll.value()
+            else -> FULL_POINTS + frames.nextFrame(currentFrameIndex).firstRoll.value()
         }
     }
-
-    private fun isSpare(frame: Frame): Boolean {
-        return frame.secondRoll == "/"
-    }
-
 }
