@@ -22,7 +22,7 @@ class Line(
 
     private fun calculateStrike(currentFrame: Frame, currentFrameIndex: Int): Int {
         return when (currentFrameIndex) {
-            LAST_FRAME_INDEX -> calculateStrikeInLastFrame(currentFrame)
+            LAST_FRAME_INDEX -> currentFrame.points().plus(currentFrame.bonusPoints())
             SECOND_TO_LAST_FRAME_INDEX -> calculateStrikeInSecondToLastFrame(currentFrame)
             else -> calculateStrikeInFirstEightFrames(currentFrame, currentFrameIndex)
         }
@@ -52,10 +52,6 @@ class Line(
             }
             else -> currentFrame.points().plus(lastFrame.points())
         }
-    }
-
-    private fun calculateStrikeInLastFrame(currentFrame: Frame): Int {
-        return currentFrame.points().plus(frames.last().bonusPoints())
     }
 
     private fun calculateSpare(currentFrame: Frame, currentFrameIndex: Int): Int {
