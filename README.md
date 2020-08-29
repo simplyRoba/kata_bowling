@@ -1,4 +1,4 @@
-![Test](https://github.com/simplyRoba/kata_bowling/workflows/Test/badge.svg?branch=master)
+[![Test](https://github.com/simplyRoba/kata_bowling/workflows/Test/badge.svg?branch=master)](https://github.com/simplyRoba/kata_bowling/actions?query=workflow%3ATest)
 
 # BOWLING KATA
 
