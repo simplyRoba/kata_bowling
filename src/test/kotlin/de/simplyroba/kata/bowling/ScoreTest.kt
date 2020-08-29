@@ -69,7 +69,8 @@ internal class ScoreTest {
 
     @Test
     internal fun `should calculate 10 pairs of 5 and spare with a final 5`() {
-        repeat(10) { frames.add(Frame('5', '/', '5')) }
+        repeat(9) { frames.add(Frame('5', '/')) }
+        frames.add(Frame('5', '/', '5'))
         assertThat(Line(frames).calculateScore()).isEqualTo(10 * 15)
     }
 
