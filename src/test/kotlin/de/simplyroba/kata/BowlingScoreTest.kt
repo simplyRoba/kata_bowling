@@ -26,7 +26,7 @@ internal class BowlingScoreTest {
     @Test
     internal fun `should calculate line with one pin down each turn`() {
         val frames = arrayListOf<Frame>()
-        repeat(10) { frames.add(Frame("0","0")) }
+        repeat(10) { frames.add(Frame("1","1")) }
         assertThat(Line(frames).calculateScore()).isEqualTo(20)
     }
 }

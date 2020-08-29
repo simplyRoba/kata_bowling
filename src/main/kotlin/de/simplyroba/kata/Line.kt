@@ -1,9 +1,13 @@
 package de.simplyroba.kata
 
 class Line(
-        frames: ArrayList<Frame>
+        private val frames: ArrayList<Frame>
 ) {
     fun calculateScore(): Int {
-        return 0
+        var score = 0
+        for (frame in frames) {
+            score += (frame.firstRoll.toInt() + frame.secondRoll.toInt())
+        }
+        return score
     }
 }
