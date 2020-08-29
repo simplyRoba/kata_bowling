@@ -37,15 +37,13 @@ class Line(
     private fun calculateStrikeInFirstEightFrames(currentFrameIndex: Int): Int {
         val nextFrame = frames.nextFrame(currentFrameIndex)
         val afterNextFrame = frames.nextFrame(currentFrameIndex + 1)
-        with(nextFrame) {
-            return when {
-                isStrike() -> {
-                    FULL_POINTS
-                        .plus(firstRoll.points())
-                        .plus(afterNextFrame.firstRoll.points())
-                }
-                else -> FULL_POINTS.plus(points())
+        return when {
+            nextFrame.isStrike() -> {
+                FULL_POINTS
+                    .plus(nextFrame.firstRoll.points())
+                    .plus(afterNextFrame.firstRoll.points())
             }
+            else -> FULL_POINTS.plus(nextFrame.points())
         }
     }
 
