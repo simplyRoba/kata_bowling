@@ -7,7 +7,7 @@ fun Frames.nextFrame(currentFrameIndex: Int): Frame {
 }
 
 class Line(
-        private val frames: Frames
+    private val frames: Frames
 ) {
 
     companion object {
@@ -16,11 +16,9 @@ class Line(
     }
 
     fun calculateScore(): Int {
-        var score = 0
-        for ((index, frame) in frames.withIndex()) {
-            score += (parseFrameScore(frame, index))
-        }
-        return score
+        return frames
+            .mapIndexed { index, frame -> parseFrameScore(frame, index) }
+            .sum()
     }
 
     private fun parseFrameScore(frame: Frame, currentFrameIndex: Int): Int {
